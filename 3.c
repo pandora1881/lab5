@@ -1,42 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main() {
     int n;
     printf("Введіть розмір масиву: ");
     scanf("%d", &n);
-    
+
     int arr[n];
-    int i, positive_count = 0, product = 1;
-    int min_index = 0, min_value = 0;
+    int i;
     
-    // Ввід елементів масиву
-    printf("Введіть елементи масиву:\n");
+    // Заповнення масиву випадковими числами
+    srand(time(0));
     for (i = 0; i < n; i++) {
-        printf("Елемент %d: ", i + 1);
-        scanf("%d", &arr[i]);
+        arr[i] = rand() % 201 - 100;  // Генеруємо числа в діапазоні [-100, 100]
     }
-    
-    // Пошук кількості додатних елементів масиву
+
+    // Виведення масиву
+    printf("Масив: ");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // Знаходження кількості додатних елементів масиву
+    int count_positive = 0;
     for (i = 0; i < n; i++) {
         if (arr[i] > 0) {
-            positive_count++;
+            count_positive++;
         }
     }
-    
-    // Пошук мінімального за модулем елемента та обчислення добутку перед ним
-    for (i = 0; i < n; i++) {
-        if (abs(arr[i]) < abs(arr[min_index])) {
-            min_index = i;
-        }
-        
-        if (i < min_index) {
-            product *= arr[i];
+    printf("Кількість додатних елементів масиву: %d\n", count_positive);
+
+    // Знаходження добутку елементів масиву, розташованих до мінімального за модулем елемента
+    int min_abs_index = 0;
+    for (i = 1; i < n; i++) {
+        if (abs(arr[i]) < abs(arr[min_abs_index])) {
+            min_abs_index = i;
         }
     }
-    
-    printf("Кількість додатних елементів масиву: %d\n", positive_count);
-    printf("Добуток елементів масиву, розташованих до мінімального за модулем елемента: %d\n", product);
-    
+    int product = 1;
+    for (i = 0; i < min_abs_index; i++) {
+        product *= arr[i];
+    }
+    printf("Добуток елементів масиву до мінімального за модулем елемента: %d\n", product);
+
     return 0;
 }
